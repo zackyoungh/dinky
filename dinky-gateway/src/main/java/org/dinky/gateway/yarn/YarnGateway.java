@@ -19,6 +19,7 @@
 
 package org.dinky.gateway.yarn;
 
+import org.apache.hadoop.yarn.api.records.ContainerReport;
 import org.dinky.assertion.Asserts;
 import org.dinky.context.FlinkUdfPathContextHolder;
 import org.dinky.data.enums.JobStatus;
@@ -81,6 +82,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.http.HttpUtil;
+import org.dinky.utils.ThreadUtil;
 
 public abstract class YarnGateway extends AbstractGateway {
     private static final String HTML_TAG_REGEX = "<pre>(.*)</pre>";
@@ -89,7 +91,8 @@ public abstract class YarnGateway extends AbstractGateway {
 
     protected YarnClient yarnClient;
 
-    public YarnGateway() {}
+    public YarnGateway() {
+    }
 
     public YarnGateway(GatewayConfig config) {
         super(config);
@@ -336,7 +339,7 @@ public abstract class YarnGateway extends AbstractGateway {
         String webUrl;
         int counts = SystemConfiguration.getInstances().getJobIdWait();
         while (yarnClient.getApplicationReport(clusterClient.getClusterId()).getYarnApplicationState()
-                        == YarnApplicationState.ACCEPTED
+                == YarnApplicationState.ACCEPTED
                 && counts-- > 0) {
             Thread.sleep(1000);
         }
@@ -353,8 +356,8 @@ public abstract class YarnGateway extends AbstractGateway {
             // 睡眠1秒，防止flink因为依赖或其他问题导致任务秒挂
             Thread.sleep(1000);
             String url = yarnClient
-                            .getApplicationReport(clusterClient.getClusterId())
-                            .getTrackingUrl()
+                    .getApplicationReport(clusterClient.getClusterId())
+                    .getTrackingUrl()
                     + JobsOverviewHeaders.URL.substring(1);
 
             String json = HttpUtil.get(url);
@@ -384,13 +387,20 @@ public abstract class YarnGateway extends AbstractGateway {
     }
 
     protected String getYarnContainerLog(ApplicationReport applicationReport) throws YarnException, IOException {
-        String logUrl = yarnClient
-                .getContainers(applicationReport.getCurrentApplicationAttemptId())
-                .get(0)
-                .getLogUrl();
-        String content = HttpUtil.get(logUrl + "/jobmanager.log?start=-10000");
-        String log = ReUtil.getGroup1(HTML_TAG_REGEX, content);
-        logger.info("\n\nHistory log url is: {}\n\n ", logUrl);
-        return log;
+        // Wait for up to 2.5 s. If the history log is not found yet, a prompt message will be returned.
+        int counts = 5;
+        while (yarnClient.getContainers(applicationReport.getCurrentApplicationAttemptId()).isEmpty() && counts-- > 0) {
+            ThreadUtil.sleep(500);
+        }
+        List<ContainerReport> containers = yarnClient
+                .getContainers(applicationReport.getCurrentApplicationAttemptId());
+        if (CollUtil.isNotEmpty(containers)) {
+            String logUrl = containers
+                    .get(0)
+                    .getLogUrl();
+            String content = HttpUtil.get(logUrl + "/jobmanager.log?start=-10000");
+            return ReUtil.getGroup1(HTML_TAG_REGEX, content);
+        }
+        return "No history log found yet, please go to yarn interface to view";
     }
 }
