@@ -5,8 +5,7 @@ import {leftDefaultShowTab, ToolbarRoutes} from "@/pages/DataStudioNew/Toolbar/T
 import {layout} from "@/pages/DataStudioNew/ContentLayout";
 import {
   CenterTabDTO,
-  HandleLayoutChangeDTO,
-  InitSaveLayoutDTO,
+  HandleToolbarClickDTO,
   ProjectDTO,
   ProjectState,
   SaveToolbarLayoutDTO
@@ -47,10 +46,10 @@ export type StudioModelType = {
   state: LayoutState;
   effects: {},
   reducers: {
-    // 初始化保存布局
-    initSaveLayout: Reducer<LayoutState, InitSaveLayoutDTO>;
     // 监听布局变化
-    handleLayoutChange: Reducer<LayoutState, HandleLayoutChangeDTO>;
+    handleLayoutChange: Reducer<LayoutState>;
+    // 操作工具栏点击
+    handleToolbarClick: Reducer<LayoutState, HandleToolbarClickDTO>;
     // 操作工具栏显示描述
     handleToolbarShowDesc: Reducer<LayoutState>;
     // 保存工具栏布局
@@ -101,12 +100,25 @@ const StudioModel: StudioModelType = {
   },
   effects: {},
   reducers: {
-    initSaveLayout(state, {dockLayout}) {
+    // 操作工具栏点击
+    handleToolbarClick(state, {key, position}) {
+      // 如果当前点击的tab已经打开，则关闭
+      if (state.toolbar[position].allOpenTabs.includes(key)) {
+        state.toolbar[position].allOpenTabs = state.toolbar[position].allOpenTabs.filter((x: string) => x !== key)
+        if (state.toolbar[position].currentSelect === key) {
+          state.toolbar[position].currentSelect = undefined
+        }
+      } else {
+        // 如果当前点击的tab没有打开，则打开
+        state.toolbar[position].allOpenTabs = [key]
+        state.toolbar[position].currentSelect = key
+      }
+
       return {
-        ...state,
-        layoutData: dockLayout.saveLayout()
+        ...state
       }
     },
+    // 监听布局变化
     handleLayoutChange(state, {dockLayout, newLayout, currentTabId, direction}) {
 
       if (direction === 'remove') {
@@ -148,9 +160,9 @@ const StudioModel: StudioModelType = {
         }
       }
 
-      state.toolbar.leftBottom.currentSelect=undefined;
-      state.toolbar.right.currentSelect=undefined;
-      state.toolbar.leftTop.currentSelect=undefined;
+      state.toolbar.leftBottom.currentSelect = undefined;
+      state.toolbar.right.currentSelect = undefined;
+      state.toolbar.leftTop.currentSelect = undefined;
       // 获取所有panel,并更正工具栏的显示
       getAllPanel(newLayout).forEach((panel) => {
         const toolbarPosition = panel.group as ToolbarPosition;

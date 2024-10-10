@@ -1,19 +1,19 @@
 import {STUDIO_MODEL} from "@/pages/DataStudioNew/model";
 import {Dispatch} from "@umijs/max";
 import {
-  CenterTabDTO,
-  HandleLayoutChangeDTO,
-  InitSaveLayoutDTO,
-  PayloadType, ProjectDTO,
-  SaveToolbarLayoutDTO
+    CenterTabDTO,
+    HandleLayoutChangeDTO, HandleToolbarClickDTO,
+    InitSaveLayoutDTO,
+    PayloadType, ProjectDTO,
+    SaveToolbarLayoutDTO
 } from "@/pages/DataStudioNew/type";
 
 export const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    initSaveLayout: (payload: InitSaveLayoutDTO) =>{
+      handleToolbarClick: (payload: HandleToolbarClickDTO) =>{
       dispatch({
         ...payload,
-        type: STUDIO_MODEL.initSaveLayout
+        type: STUDIO_MODEL.handleToolbarClick
       })
     },
     handleLayoutChange: (payload: HandleLayoutChangeDTO) =>

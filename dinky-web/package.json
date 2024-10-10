@@ -74,6 +74,7 @@
     "react-fast-marquee": "^1.6.5",
     "react-grid-layout": "^1.4.4",
     "react-helmet-async": "^2.0.5",
+    "react-resizable-panels": "^2.1.4",
     "react-lineage-dag": "^2.0.36",
     "react-lottie": "^1.2.4",
     "react-markdown": "^9.0.1",
@@ -88,7 +89,8 @@
     "styled-components": "^6.1.1",
     "use-sse": "^2.0.1",
     "uuid": "^10.0.0",
-    "websocket": "^1.0.35"
+    "websocket": "^1.0.35",
+    "react-activation": "^0.12.4"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^3.2.1",

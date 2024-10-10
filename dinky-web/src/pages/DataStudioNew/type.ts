@@ -4,6 +4,11 @@ import {AnyAction} from "@@/plugin-dva/types";
 import {DropDirection, LayoutBase} from "rc-dock/src/DockData";
 import {CenterTab} from "@/pages/DataStudioNew/model";
 
+export interface HandleToolbarClickDTO extends AnyAction{
+  key: string;
+  position: ToolbarPosition;
+}
+
 // dispatch DTO
 export interface InitSaveLayoutDTO extends AnyAction {
   dockLayout: DockLayout;
