@@ -18,10 +18,10 @@
  */
 
 import {TabData} from 'rc-dock';
-import React, {useState} from 'react';
+import React, {Suspense, useRef, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
 import 'rc-dock/dist/rc-dock.css';
-import {Col, Row, theme} from 'antd';
+import {Col, Input, Row, Tabs, theme} from 'antd';
 import FooterContainer from '@/pages/DataStudio/FooterContainer';
 import Toolbar from '@/pages/DataStudioNew/Toolbar';
 import {RightContextMenuState} from '@/pages/DataStudioNew/data.d';
@@ -39,10 +39,11 @@ import {LayoutState} from "@/pages/DataStudioNew/model";
 import {mapDispatchToProps} from "@/pages/DataStudioNew/DvaFunction";
 import {getUUID} from "rc-select/es/hooks/useId";
 import {Panel, PanelGroup, PanelResizeHandle} from "react-resizable-panels";
-import KeepAlive, {AliveScope} from "react-activation";
+import {AliveScope, KeepAlive} from "react-activation";
+import {Project} from "@/pages/DataStudioNew/Toolbar/Project";
+import {ImperativePanelHandle} from "react-resizable-panels/src/Panel";
 
 const {useToken} = theme;
-
 const DataStudioNew: React.FC = (props: any) => {
   const {
     layoutState,
@@ -90,7 +91,7 @@ const DataStudioNew: React.FC = (props: any) => {
 
     handleToolbarClick({
       key: route.key,
-      position : route.position
+      position: route.position
     })
   };
 
@@ -186,44 +187,44 @@ const DataStudioNew: React.FC = (props: any) => {
         {/* 中间内容栏*/}
         <Col style={{height: 'inherit'}} flex='auto'>
           <AliveScope>
-          <PanelGroup direction="vertical" onLayout={(sizes: number[]) => {
-            console.log(sizes)
-          }}>
-            <Panel style={{position:'absolute'}}>
-              <PanelGroup direction="horizontal">
-                {layoutState.toolbar.leftTop.allOpenTabs.length > 0 && (
-                  <>
-                    <Panel>
-                        <KeepAlive>
-                          {TestRoutes[layoutState.toolbar.leftTop.currentSelect]}
+            <PanelGroup style={{position: 'absolute'}} direction="vertical" onLayout={(sizes: number[]) => {
+              console.log(sizes)
+            }}>
+              <Panel >
+                <PanelGroup direction="horizontal">
+                  {layoutState.toolbar.leftTop.allOpenTabs.length > 0 && (
+                    <>
+                      <Panel  style={{height:'100%'}}>
+                        <KeepAlive cacheKey={layoutState.toolbar.leftTop.currentSelect} saveScrollPosition={'screen'} style={{height:'100%'}}>
+                           {TestRoutes[layoutState.toolbar.leftTop.currentSelect]}
                         </KeepAlive>
-                    </Panel>
-                    <PanelResizeHandle/>
-                  </>
-                )}
-                <Panel>
-                  {TestRoutes["quick-start"]}
-                </Panel>
-                {layoutState.toolbar.right.allOpenTabs.length > 0 && (
-                  <>
-                    <PanelResizeHandle/>
-                    <Panel>
-                      right
-                    </Panel>
-                  </>
-                )}
-              </PanelGroup>
-            </Panel>
-            {layoutState.toolbar.leftBottom.allOpenTabs.length > 0 && (
-              <>
-                <PanelResizeHandle/>
-                <Panel>
-                  bottom
-                </Panel>
-              </>
-            )}
+                      </Panel>
+                      <PanelResizeHandle/>
+                    </>
+                  )}
+                  <Panel>
+                    {TestRoutes["quick-start"]}
+                  </Panel>
+                  {layoutState.toolbar.right.allOpenTabs.length > 0 && (
+                    <>
+                      <PanelResizeHandle/>
+                      <Panel>
+                        right
+                      </Panel>
+                    </>
+                  )}
+                </PanelGroup>
+              </Panel>
+              {layoutState.toolbar.leftBottom.allOpenTabs.length > 0 && (
+                <>
+                  <PanelResizeHandle/>
+                  <Panel>
+                    bottom
+                  </Panel>
+                </>
+              )}
 
-          </PanelGroup>
+            </PanelGroup>
           </AliveScope>
         </Col>
 

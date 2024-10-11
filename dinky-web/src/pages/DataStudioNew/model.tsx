@@ -69,8 +69,8 @@ const StudioModel: StudioModelType = {
     toolbar: {
       showDesc: false,
       leftTop: {
-        currentSelect: leftDefaultShowTab.key,
-        allOpenTabs: [leftDefaultShowTab.key],
+        currentSelect: undefined,
+        allOpenTabs: [],
         allTabs: ToolbarRoutes.filter((x) => x.position === 'leftTop').map((x) => x.key)
       },
       leftBottom: {
@@ -219,6 +219,7 @@ const StudioModel: StudioModelType = {
       }
     },
     updateProject(state, {expandKeys, selectKey}) {
+      console.log(expandKeys, selectKey,'dva update project')
       return {
         ...state,
         toolbar: {
