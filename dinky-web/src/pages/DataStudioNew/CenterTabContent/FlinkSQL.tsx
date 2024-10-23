@@ -44,6 +44,7 @@ import {getDataByParams, queryDataByParams} from "@/services/BusinessCrud";
 import {API_CONSTANTS} from "@/services/endpoints";
 import {Jobs, LineageDetailInfo} from "@/types/DevOps/data";
 import {isStatusDone} from "@/pages/DataStudioNew/function";
+import {debugTask} from "@/pages/DataStudioNew/service";
 
 export type FlinkSqlProps = {
   showDesc: boolean;
@@ -302,7 +303,7 @@ export const FlinkSQL = (props: FlinkSqlProps & any) => {
                                 onClick={async () => {
                                   await handleSave()
                                   updateAction({
-                                    actionType: 'run',
+                                    actionType: DataStudioActionType.TASK_RUN_SUBMIT,
                                     params: {
                                       taskId: params.taskId,
                                       envId: currentState.envId
@@ -312,16 +313,36 @@ export const FlinkSQL = (props: FlinkSqlProps & any) => {
                                     l('pages.datastudio.editor.submitting', '', {jobName: title}),
                                     params.taskId
                                   )
-                                  setCurrentState(prevState => {
-                                    return {
-                                      ...prevState,
-                                      status: result.data.status === "SUCCESS" ? "RUNNING" : result.data.status
-                                    }
-                                  })
-
+                                  if (result.success){
+                                    setCurrentState(prevState => {
+                                      return {
+                                        ...prevState,
+                                        status: result.data.status === "SUCCESS" ? "RUNNING" : result.data.status
+                                      }
+                                    })
+                                  }
                                 }}/>}
             {isStatusDone(currentState.status) &&
-              <RunToolBarButton showDesc={showDesc} color={'red'} desc={"预览"} icon={<BugOutlined/>}/>}
+              <RunToolBarButton showDesc={showDesc} color={'red'} desc={"预览"} icon={<BugOutlined/>} onClick={async ()=>{
+                const res = await debugTask(
+                  l('pages.datastudio.editor.debugging', '', { jobName: currentState.name }),
+                  { ...currentState }
+                );
+                if (res?.success && res?.data?.result?.success){
+                  updateAction({
+                    actionType: DataStudioActionType.TASK_RUN_DEBUG,
+                    params: {
+                      taskId: params.taskId,
+                    }
+                  })
+                  setCurrentState(prevState => {
+                    return {
+                      ...prevState,
+                      status: res.data.status === "SUCCESS" ? "RUNNING" : res.data.status
+                    }
+                  })
+                }
+              }}/>}
 
             {!isStatusDone(currentState.status) &&
               <RunToolBarButton showDesc={showDesc} color={'red'} desc={"停止"} icon={<PauseOutlined/>}

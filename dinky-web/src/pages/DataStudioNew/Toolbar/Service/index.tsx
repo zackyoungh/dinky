@@ -10,9 +10,10 @@ import {
   ApartmentOutlined,
   ArrowsAltOutlined,
   AuditOutlined,
-  CodeOutlined, HistoryOutlined,
+  CodeOutlined,
+  HistoryOutlined,
   PartitionOutlined,
-  ShrinkOutlined
+  ShrinkOutlined, TableOutlined
 } from "@ant-design/icons";
 import RunToolBarButton from "@/pages/DataStudioNew/components/RunToolBarButton";
 import CusPanelResizeHandle from "@/pages/DataStudioNew/components/CusPanelResizeHandle";
@@ -24,6 +25,7 @@ import {DataStudioActionType} from "@/pages/DataStudioNew/data.d";
 import Explain from "@/pages/DataStudioNew/Toolbar/Service/Explain";
 import FlinkGraph from "@/pages/DataStudioNew/Toolbar/Service/FlinkGraph";
 import Lineage from "@/pages/DataStudioNew/Toolbar/Service/Lineage";
+import Result from "@/pages/DataStudioNew/Toolbar/Service/Result";
 
 
 const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) => {
@@ -31,6 +33,7 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
   const [selectedKey, setSelectedKey] = useState<Key[]>([]);
   const [taskItems, setTaskItems] = useState<Record<string, TabsProps['items']>>({});
   const [tabActiveKey, setTabActiveKey] = useState<Record<string, string>>({});
+
 
   useEffect(() => {
     if (!actionType || !params) {
@@ -53,7 +56,7 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
             ]
           }
         ))
-      }else {
+      } else {
         setTaskItems(prevState => {
           const item = prevState[params.taskId]!!
           item.find((item) => item.key === actionType)!!.children = <Explain data={params.data}/>
@@ -67,7 +70,7 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
         }
       ))
 
-    }else if (actionType === DataStudioActionType.TASK_RUN_DAG) {
+    } else if (actionType === DataStudioActionType.TASK_RUN_DAG) {
       if (!taskItem.some((item) => item.key === actionType)) {
         setTaskItems(prevState => (
           {
@@ -82,7 +85,7 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
             ]
           }
         ))
-      }else {
+      } else {
         setTaskItems(prevState => {
           const item = prevState[params.taskId]!!
           item.find((item) => item.key === actionType)!!.children = <FlinkGraph data={params.data}/>
@@ -95,7 +98,7 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
           [params.taskId]: actionType
         }
       ))
-    }else if (actionType === DataStudioActionType.TASK_RUN_LINEAGE) {
+    } else if (actionType === DataStudioActionType.TASK_RUN_LINEAGE) {
       if (!taskItem.some((item) => item.key === actionType)) {
         setTaskItems(prevState => (
           {
@@ -110,7 +113,7 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
             ]
           }
         ))
-      }else {
+      } else {
         setTaskItems(prevState => {
           const item = prevState[params.taskId]!!
           item.find((item) => item.key === actionType)!!.children = <Lineage data={params.data}/>
@@ -123,15 +126,21 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
           [params.taskId]: actionType
         }
       ))
+    } else if (actionType === DataStudioActionType.TASK_RUN_SUBMIT ||actionType === DataStudioActionType.TASK_RUN_DEBUG) {
+      setTabActiveKey(prevState => (
+        {
+          ...prevState,
+          [params.taskId]: actionType
+        }
+      ))
     }
 
   }, [props.action]);
 
-
   const treeData: TreeDataNode[] = [
     {
-      title: 'Database',
-      key: 'Database',
+      title: 'Task',
+      key: 'Task',
       children: [],
     }
   ];
@@ -139,14 +148,14 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
     if (tab.tabType === 'task') {
       console.log(tab.params)
       // 查找到对应的task，并添加，不存在的节点，添加
-      // 1. 查找到对应的Database
+      // 1. 查找到对应的Task
       // 2. 查找到对应的FlinkSql
       // 3. 查找到对应的task
 
       treeData.forEach((node) => {
         const dialect = tab.params.dialect
         const icon = getIcon(dialect)
-        if (node.key === 'Database') {
+        if (node.key === 'Task') {
           let currentDialectTree = node.children!!.find((child) => child.key === dialect) as TreeDataNode;
           if (!currentDialectTree) {
             node.children!!.push({title: dialect, key: dialect, icon: icon, children: []})
@@ -160,12 +169,13 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
     }
   })
 
+
   const renderContent = () => {
     if (selectedKey.length === 1) {
       const taskId = selectedKey[0] as number;
       const items: TabsProps['items'] = [
         {
-          key: 'output',
+          key: DataStudioActionType.TASK_RUN_SUBMIT,
           label: '输出',
           icon: <CodeOutlined/>,
           children: <Output taskId={taskId}/>,
@@ -176,6 +186,12 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
           label: '执行历史',
           icon: <HistoryOutlined/>,
           children: <ExecutionHistory taskId={taskId}/>,
+        },
+        {
+          key: DataStudioActionType.TASK_RUN_DEBUG,
+          label: '结果',
+          icon: <TableOutlined/>,
+          children: <Result taskId={taskId}/>,
         },
       ];
       const taskItem = taskItems[taskId] ?? [];
@@ -204,7 +220,6 @@ const Service = (props: { showDesc: boolean, tabs: CenterTab[], action: any }) =
         treeData={treeData}
         expandAction={false}
         onSelect={(selectedKeys, {node}) => {
-
           node.isLeaf && setSelectedKey(selectedKeys)
         }}
         blockNode

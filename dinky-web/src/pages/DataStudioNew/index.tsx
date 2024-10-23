@@ -40,6 +40,7 @@ import * as Algorithm from "./Algorithm";
 import {PanelData} from "rc-dock/lib/DockData";
 import {useAsyncEffect} from "ahooks";
 import {getIcon} from "@/utils/function";
+import {undefined} from "@umijs/utils/compiled/zod";
 
 const {useToken} = theme;
 const FlinkSQL = lazy(() => import('@/pages/DataStudioNew/CenterTabContent/FlinkSQL'));
@@ -71,20 +72,46 @@ const DataStudioNew: React.FC = (props: any) => {
   });
 
   useAsyncEffect(async () => {
-    // await queryFlinkEnv()
-    // await queryFlinkCluster()
-    // await queryAlertGroup()
-    // await queryFlinkConfigOptions()
-    // await queryFlinkUdfOptions()
-
-    await Promise.all([queryFlinkEnv(), queryFlinkCluster(), queryAlertGroup(), queryFlinkConfigOptions(), queryFlinkUdfOptions()])
-  }, [])
-  useEffect(() => {
     updateAction({
       actionType: undefined,
       params: undefined
     })
-  }, []);
+    await queryFlinkEnv()
+    await queryFlinkCluster()
+    await queryAlertGroup()
+    await queryFlinkConfigOptions()
+    await queryFlinkUdfOptions()
+  }, [])
+  useEffect(() => {
+    const {actionType, params} = layoutState.action
+    if ((typeof actionType) ==='string' &&actionType?.includes("task-run-")) {
+      const dockLayout = dockLayoutRef.current!!;
+      let serviceRoute: ToolbarRoute;
+      serviceRoute = layoutState.toolbar.leftTop.allTabs.find((x: string) => x === "service");
+      if (!serviceRoute) {
+        serviceRoute = layoutState.toolbar.leftBottom.allTabs.find((x: string) => x === "service");
+      }
+      if (!serviceRoute) {
+        serviceRoute = layoutState.toolbar.right.allTabs.find((x: string) => x === "service");
+      }
+      const currentSelect = layoutState.toolbar[serviceRoute.position].currentSelect;
+      if (!currentSelect) {
+        // 添加panel
+        const layout = Algorithm.fixLayoutData(createNewPanel(layoutState.layoutData, serviceRoute), dockLayout.props.groups);
+        dockLayout.changeLayout(layout, serviceRoute.key, "update", false)
+      } else {
+        //  切换tab
+        dockLayout.updateTab(currentSelect, {
+          id: serviceRoute.key,
+          content: <></>,
+          title: serviceRoute.title,
+          group: serviceRoute.position
+        }, true)
+      }
+    }
+
+  }, [layoutState.action]);
+
   useEffect(() => {
     if (dockLayoutRef.current) {
       if (layoutState.centerContent.activeTab) {
@@ -174,8 +201,8 @@ const DataStudioNew: React.FC = (props: any) => {
 
       const getTitle = () => {
         if (tabData.tabType === "task") {
-          if (tabData.isUpdate){
-            return <span style={{color:'#52c41a'}}>{getIcon(tabData.params.dialect)}{tabData.title}{"  *"}</span>
+          if (tabData.isUpdate) {
+            return <span style={{color: '#52c41a'}}>{getIcon(tabData.params.dialect)}{tabData.title}{"  *"}</span>
           }
           return <span>{getIcon(tabData.params.dialect)}{tabData.title}</span>
         } else {
@@ -187,7 +214,7 @@ const DataStudioNew: React.FC = (props: any) => {
         ...tab,
         title: getTitle(),
         closable: true,
-        content: <KeepAlive cacheKey={tabData.id}>{lazyComponent(<FlinkSQL  tabData={tabData}/>)}</KeepAlive>,
+        content: <KeepAlive cacheKey={tabData.id}>{lazyComponent(<FlinkSQL tabData={tabData}/>)}</KeepAlive>,
       };
     }
 
@@ -364,7 +391,7 @@ const DataStudioNew: React.FC = (props: any) => {
 
 export default connect(
   ({DataStudio}: { DataStudio: LayoutState }) => ({
-    layoutState: DataStudio
+    layoutState: DataStudio,
   }), mapDispatchToProps)(DataStudioNew);
 
 // export default DataStudioNew

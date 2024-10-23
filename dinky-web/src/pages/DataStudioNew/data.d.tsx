@@ -51,5 +51,7 @@ export enum DataStudioActionType {
   TASK_RUN_CHECK = 'task-run-check',
   TASK_RUN_DAG = 'task-run-dag',
   TASK_RUN_LINEAGE = 'task-run-lineage',
+  TASK_RUN_SUBMIT = 'task-run-submit',
+  TASK_RUN_DEBUG = 'task-run-debug',
 
 }

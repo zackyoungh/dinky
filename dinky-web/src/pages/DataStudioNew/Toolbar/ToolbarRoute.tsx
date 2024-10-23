@@ -77,7 +77,7 @@ export const ToolbarRoutes: ToolbarRoute[] = [
     content: () => lazyComponent(<GlobalVariable/>)
   },
   {
-    key: '服务',
+    key: 'service',
     title: '服务',
     icon: <SettingOutlined/>,
     position: 'leftBottom',
