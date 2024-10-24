@@ -23,6 +23,14 @@ import { MenuInfo } from 'rc-menu/es/interface';
 import React from 'react';
 import { RightMenuItemProps } from '@/pages/DataStudioNew/data.d';
 
+/**
+ * 右键菜单组件props | Right-click menu component props
+ * @param onClick 点击事件 | Click event
+ * @param items 菜单项 | Menu item
+ * @param contextMenuPosition 右键菜单位置 | Right-click menu position
+ * @param open 是否打开 | Whether to open
+ * @param openChange 打开事件 | Open event
+ */
 type RightContextMenuProps = {
   onClick: (values: MenuInfo) => void;
   items: MenuItemType[];
@@ -31,6 +39,12 @@ type RightContextMenuProps = {
   openChange: () => void;
 };
 
+/**
+ * zh: 右键菜单组件
+ * en: Right-click menu component.
+ * @param props RightContextMenuProps
+ * @constructor
+ */
 const RightContextMenu: React.FC<RightContextMenuProps> = (props) => {
   const { onClick, items, openChange, open, contextMenuPosition } = props;
 
@@ -53,7 +67,12 @@ const RightContextMenu: React.FC<RightContextMenuProps> = (props) => {
 
 export default RightContextMenu;
 
-// 获取右键按钮菜单
+
+/**
+ * 自定义钩子函数 | Custom hook function.
+ * 获取右键按钮菜单项 | Get right-click button menu items.
+ * @param props RightMenuItemProps
+ */
 export const useRightMenuItem = (props: RightMenuItemProps) => {
   const { layoutState } = props;
   const menuItem: MenuItemType[] = [];
@@ -62,7 +81,7 @@ export const useRightMenuItem = (props: RightMenuItemProps) => {
     label: '保存布局'
   });
 
-  // 显示工具窗口名称
+  // 显示工具窗口名称 | Show toolbar window name.
   if (layoutState.toolbar.showDesc) {
     menuItem.push({
       key: 'hideToolbarDesc',

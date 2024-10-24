@@ -393,5 +393,3 @@ export default connect(
   ({DataStudio}: { DataStudio: LayoutState }) => ({
     layoutState: DataStudio,
   }), mapDispatchToProps)(DataStudioNew);
-
-// export default DataStudioNew
