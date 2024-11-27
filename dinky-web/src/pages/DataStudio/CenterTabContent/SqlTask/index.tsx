@@ -917,7 +917,7 @@ export const SqlTask = memo((props: FlinkSqlProps & any) => {
                                   );
                                 }}
                                 normalize={(value) => {
-                                  return value.value;
+                                  return value?.value ?? "";
                                 }}
                                 name={'uri'}
                                 label={l('datastudio.sqlTask.flinkJar.uri')}
