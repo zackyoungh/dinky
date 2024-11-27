@@ -909,7 +909,7 @@ export const SqlTask = memo((props: FlinkSqlProps & any) => {
                             }));
                           }}
                         >
-                          <ProFormCheckbox.Group name='manualInput' options={['手动输入']} />
+                          <ProFormCheckbox.Group name='manualInput' options={[l('datastudio.sqlTask.flinkJar.manualInput')]} />
 
                           <ProFormDependency name={['manualInput']}>
                             {({ manualInput }) => {
