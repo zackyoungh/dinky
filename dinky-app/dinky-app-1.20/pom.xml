@@ -85,6 +85,7 @@
                             <artifact>org.dinky:*</artifact>
                             <includes>
                                 <include>org/dinky/**</include>
+                                <include>META-INF/**</include>
                             </includes>
                         </filter>
                         <filter>
