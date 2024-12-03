@@ -20,7 +20,7 @@ spring:
         # The command retry send interval in milliseconds
         retryInterval: 1500
         # password
-        password:
+        password: ${spring.redis.password}
         # clientName
         clientName: dinky-redis
         # The maximum number of subscriptions for a single connection
