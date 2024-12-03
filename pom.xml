@@ -109,6 +109,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <protobuf-java.version>2.5.0</protobuf-java.version>
+        <redisson.version>3.39.0</redisson.version>
         <reflections.version>0.10.2</reflections.version>
         <revision>1.2.0-rc4</revision>
         <sa-token.version>1.37.0</sa-token.version>
@@ -125,7 +126,6 @@
         <sqlite-jdbc.version>3.46.0.0</sqlite-jdbc.version>
         <target.java.version>8</target.java.version>
         <testcontainers.version>1.16.2</testcontainers.version>
-        <redisson.version>3.39.0</redisson.version>
     </properties>
 
     <dependencyManagement>
