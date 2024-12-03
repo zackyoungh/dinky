@@ -2,42 +2,42 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    # redis 运行模式，standalone ，embedded
+    # redis operating mode,standalone\embedded
     mode: embedded
     database: 8
     redisson:
-      # 单节点配置
+      # Single-node configuration
       singleServerConfig:
-        # 连接空闲超时，单位：毫秒
+        # Connection idle timeout, in milliseconds
         idleConnectionTimeout: 10000
-        # 连接超时，单位：毫秒
+        # Connection timeout in milliseconds
         connectTimeout: 10000
-        # 命令等待超时，单位：毫秒
+        # Command wait timeout, in milliseconds
         timeout: 3000
-        # 命令失败重试次数,如果尝试达到 retryAttempts（命令失败重试次数） 仍然不能将命令发送至某个指定的节点时，将抛出错误。
-        # 如果尝试在此限制之内发送成功，则开始启用 timeout（命令等待超时） 计时。
+        # Command Failed Retries (an error is thrown if the attempt reaches retryAttempts and the command still fails to send the command to a specified node).
+        # If the attempt to send within this limit is successful, timeout timing is enabled.
         retryAttempts: 3
-        # 命令重试发送时间间隔，单位：毫秒
+        # The command retry send interval in milliseconds
         retryInterval: 1500
-        # 密码
+        # password
         password:
-        # 客户端名称
+        # clientName
         clientName: dinky-redis
-        # 单个连接最大订阅数量
+        # The maximum number of subscriptions for a single connection
         subscriptionsPerConnection: 5
-        # 节点地址
+        # Node address
         address: redis://${spring.redis.host}:${spring.redis.port}
-        # 发布和订阅连接的最小空闲连接数
+        # The minimum number of idle connections for publish and subscribe connections
         subscriptionConnectionMinimumIdleSize: 1
-        # 发布和订阅连接池大小
+        # Pub and sub connection pool size
         subscriptionConnectionPoolSize: 50
-        # 最小空闲连接数
+        # Minimum number of idle connections
         connectionMinimumIdleSize: 5
-        # 连接池大小
+        # Connection pool size
         connectionPoolSize: 10
-        # 数据库编号
+        # Database number
         database: ${spring.redis.database}
-        # DNS监测时间间隔，单位：毫秒
+        # DNS monitoring interval, in milliseconds
         dnsMonitoringInterval: 5000
-        # 传输模式
+        # Transmission mode
       transportMode: "NIO"
