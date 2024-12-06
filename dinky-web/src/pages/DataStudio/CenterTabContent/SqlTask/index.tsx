@@ -97,7 +97,7 @@ import { SseData, Topic } from '@/models/UseWebSocketModel';
 import { ResourceInfo } from '@/types/RegCenter/data';
 import { buildResourceTreeDataAtTreeForm } from '@/pages/RegCenter/Resource/components/FileTree/function';
 import { ProFormDependency } from '@ant-design/pro-form';
-import {SavePoint} from "@/pages/DataStudio/CenterTabContent/SqlTask/SavePoint";
+import { SavePoint } from '@/pages/DataStudio/CenterTabContent/SqlTask/SavePoint';
 
 export type FlinkSqlProps = {
   showDesc: boolean;
@@ -394,11 +394,7 @@ export const SqlTask = memo((props: FlinkSqlProps & any) => {
     rightToolbarItem.push({
       label: l('menu.datastudio.savePoint'),
       key: 'savePoint',
-      children: (
-        <SavePoint
-          taskId={currentState.taskId}
-        />
-      )
+      children: <SavePoint taskId={currentState.taskId} />
     });
   }
 
