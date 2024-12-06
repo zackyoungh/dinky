@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(onConstructor = @__(@JsonCreator))
+@AllArgsConstructor
 public class DingTalkParams {
 
     private String webhook = "";
