@@ -252,12 +252,10 @@ public class JobManager {
         jobStatementPlan.buildFinalStatement();
         job = Job.build(runMode, config, executorConfig, executor, statement, useGateway);
         ready();
+        JobRunnerFactory jobRunnerFactory = JobRunnerFactory.create(this);
         try {
-            // Only one is executed.
             for (JobStatement jobStatement : jobStatementPlan.getJobStatementList()) {
-                JobJarRunner jobJarRunner = new JobJarRunner(this);
-                jobJarRunner.run(jobStatement);
-                break;
+                jobRunnerFactory.getJobRunner(jobStatement.getStatementType()).run(jobStatement);
             }
             if (job.isFailed()) {
                 failed();
