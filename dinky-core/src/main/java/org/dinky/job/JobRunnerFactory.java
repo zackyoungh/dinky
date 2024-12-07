@@ -20,7 +20,6 @@
 package org.dinky.job;
 
 import org.dinky.data.job.JobStatementType;
-import org.dinky.job.runner.*;
 
 public class JobRunnerFactory {
 
@@ -35,7 +34,7 @@ public class JobRunnerFactory {
         this.jobSqlRunner = new JobSqlRunner(jobManager);
         this.jobPipelineRunner = new JobPipelineRunner(jobManager);
         this.jobDDLRunner = new JobDDLRunner(jobManager);
-        this.jobJarRunner = new JobJarRunner (jobManager);
+        this.jobJarRunner = new JobJarRunner(jobManager);
     }
 
     public JobRunner getJobRunner(JobStatementType jobStatementType) {

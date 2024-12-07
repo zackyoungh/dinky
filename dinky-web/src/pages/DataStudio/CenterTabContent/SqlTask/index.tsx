@@ -185,13 +185,13 @@ export const SqlTask = memo((props: FlinkSqlProps & any) => {
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
   useEffect(() => {
-    if (sqlForm.enable){
-      setSqlForm((prevState)=>({
+    if (sqlForm.enable) {
+      setSqlForm((prevState) => ({
         ...prevState,
-        initSqlStatement:currentState.statement
-      }))
+        initSqlStatement: currentState.statement
+      }));
     }
-  }, [sqlForm.enable,currentState.statement]);
+  }, [sqlForm.enable, currentState.statement]);
 
   useAsyncEffect(async () => {
     const taskDetail = await getTaskDetails(params.taskId);

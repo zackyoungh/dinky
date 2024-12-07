@@ -58,7 +58,6 @@ import org.apache.flink.streaming.api.graph.StreamGraph;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.*;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.StrFormatter;
@@ -175,7 +174,9 @@ public class JobJarRunner extends AbstractJobRunner {
                 getPipeline(jobStatement), jobManager.getExecutor().getCustomTableEnvironment());
         if (Asserts.isNotNull(jobClient)) {
             jobManager.getJob().setJobId(jobClient.getJobID().toHexString());
-            jobManager.getJob().setJids(Collections.singletonList(jobManager.getJob().getJobId()));
+            jobManager
+                    .getJob()
+                    .setJids(Collections.singletonList(jobManager.getJob().getJobId()));
             jobManager.getJob().setStatus(Job.JobStatus.SUCCESS);
         } else {
             jobManager.getJob().setStatus(Job.JobStatus.FAILED);

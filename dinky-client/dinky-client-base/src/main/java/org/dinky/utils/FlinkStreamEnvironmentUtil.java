@@ -21,6 +21,8 @@ package org.dinky.utils;
 
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
+import org.dinky.executor.CustomTableEnvironment;
+
 import org.apache.flink.api.common.Plan;
 import org.apache.flink.api.dag.Pipeline;
 import org.apache.flink.client.PlanTranslator;
@@ -41,7 +43,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import cn.hutool.core.util.ReflectUtil;
-import org.dinky.executor.CustomTableEnvironment;
 
 public enum FlinkStreamEnvironmentUtil {
     ;
@@ -80,6 +81,7 @@ public enum FlinkStreamEnvironmentUtil {
                     strippedException);
         }
     }
+
     public static JobClient executeAsync(Pipeline pipeline, CustomTableEnvironment env) throws Exception {
         Configuration configuration = new Configuration(env.getRootConfiguration());
         checkNotNull(pipeline, "pipeline cannot be null.");
@@ -87,8 +89,8 @@ public enum FlinkStreamEnvironmentUtil {
                 configuration.get(DeploymentOptions.TARGET),
                 "No execution.target specified in your configuration file.");
 
-        PipelineExecutorServiceLoader executorServiceLoader =
-                (PipelineExecutorServiceLoader) ReflectUtil.getFieldValue(env.getStreamExecutionEnvironment(), "executorServiceLoader");
+        PipelineExecutorServiceLoader executorServiceLoader = (PipelineExecutorServiceLoader)
+                ReflectUtil.getFieldValue(env.getStreamExecutionEnvironment(), "executorServiceLoader");
         ClassLoader userClassloader = (ClassLoader) ReflectUtil.getFieldValue(env, "userClassloader");
         final PipelineExecutorFactory executorFactory = executorServiceLoader.getExecutorFactory(configuration);
 

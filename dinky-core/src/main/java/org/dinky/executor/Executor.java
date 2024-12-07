@@ -215,7 +215,7 @@ public abstract class Executor {
                 jobStatementPlan.addJobStatement(statement, JobStatementType.SET, operationType);
             } else if (operationType.equals(SqlType.EXECUTE_JAR)) {
                 jobStatementPlan.addJobStatement(statement, JobStatementType.EXECUTE_JAR, operationType);
-            }  else if (operationType.equals(SqlType.EXECUTE)) {
+            } else if (operationType.equals(SqlType.EXECUTE)) {
                 jobStatementPlan.addJobStatement(statement, JobStatementType.PIPELINE, operationType);
             } else if (operationType.equals(SqlType.PRINT)) {
                 for (String tableName : PrintStatementExplainer.getTableNames(statement)) {
