@@ -26,7 +26,6 @@ import org.dinky.job.runner.JobPipelineRunner;
 import org.dinky.job.runner.JobSetRunner;
 import org.dinky.job.runner.JobSqlRunner;
 
-
 public class JobRunnerFactory {
 
     private JobSetRunner jobSetRunner;
