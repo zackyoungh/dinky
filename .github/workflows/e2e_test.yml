@@ -75,3 +75,7 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.2
         with:
           compose-file: ./e2e_test/docker-compose-env/dinky/docker-compose.yml
+      - name:  Run Docker Python Script
+        uses: hoverkraft-tech/compose-action@v2.0.2
+        with:
+          compose-file: ./e2e_test/tools/docker-compose.yml
