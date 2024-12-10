@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-name: Docker Build
+name: E2E Test
 
 on:
   workflow_dispatch:
