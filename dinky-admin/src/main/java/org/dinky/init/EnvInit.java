@@ -19,6 +19,8 @@
 
 package org.dinky.init;
 
+import cn.hutool.core.io.FileUtil;
+import org.dinky.data.constant.DirConstant;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
@@ -60,5 +62,6 @@ public class EnvInit implements ApplicationRunner {
                 port,
                 ipAddress,
                 port);
+        FileUtil.mkdir(DirConstant.getTempRootDir());
     }
 }
