@@ -12,5 +12,8 @@ services:
       - MYSQL_DATABASE=dinky
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=dinky
+    volumes:
+      - ./mysql-connector-java-8.0.30.jar:/opt/dinky/lib/mysql-connector-java-8.0.30.jar
+      - ../flink/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar:/opt/dinky/lib/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar
     networks:
       - dinky_net
