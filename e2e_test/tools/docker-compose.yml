@@ -3,11 +3,12 @@ networks:
   dinky_net:
     external: true
 services:
-  mysql:
+  python-script:
     restart: always
     image: python:3.8
     volumes:
       - ./:/app
-    command: 'cd /app && pip install  -r requirements.txt &&  python main.py dinky14:8888'
+    working_dir: /app
+    command: 'pip install  -r requirements.txt &&  python main.py dinky14:8888'
     networks:
       - dinky_net
