@@ -70,7 +70,7 @@ jobs:
         with:
           file: ./deploy/docker/Dockerfile
           # 是否 docker push
-          push: false
+          push: true
           build-args: |
             FLINK_VERSION=1.14
             DINKY_VERSION=1
