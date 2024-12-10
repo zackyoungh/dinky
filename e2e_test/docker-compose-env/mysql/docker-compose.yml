@@ -8,6 +8,7 @@ services:
     image: mysql:5.7
     volumes:
       - ./conf:/etc/mysql
+      - ./conf/mysql.conf.d/:/etc/mysql/mysql.conf.d
     environment:
       - MYSQL_ROOT_PASSWORD=dinky
       - MYSQL_DATABASE=dinky
