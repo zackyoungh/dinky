@@ -5,7 +5,7 @@ networks:
 services:
   dinky14:
     restart: always
-    image: dinky-test:flink-1.14
+    image: localhost:5000/dinky/dinky-test:flink-1.14
     environment:
       - DB_ACTIVE=mysql
       - MYSQL_ADDR=mysql:3306

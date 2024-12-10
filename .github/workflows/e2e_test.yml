@@ -31,6 +31,11 @@ jobs:
   init_env:
     name: init env
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,7 +75,7 @@ jobs:
             FLINK_VERSION=1.14
             DINKY_VERSION=1
           tags: |
-            dinky-test:flink-1.14
+            localhost:5000/dinky/dinky-test:flink-1.14
       - name: Init Run Docker Dinky
         uses: hoverkraft-tech/compose-action@v2.0.2
         with:
