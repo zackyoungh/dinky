@@ -1,9 +1,8 @@
 ﻿version: "3"
 networks:
-  hadoop:
-    ipam:
-      config:
-        - subnet: 172.22.0.0/24
+  dinky_net:
+    external: true
+
 services:
   namenode:
     image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
@@ -20,8 +19,7 @@ services:
     env_file:
       - hadoop.env
     networks:
-      hadoop:
-        ipv4_address: 172.22.0.2
+      - dinky_net
 
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
@@ -38,8 +36,7 @@ services:
       - 9864:9864
       - 9866:9866
     networks:
-      hadoop:
-        ipv4_address: 172.22.0.3
+      - dinky_net
   resourcemanager:
     image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
     container_name: resourcemanager
@@ -49,12 +46,10 @@ services:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
     env_file:
       - hadoop.env
-    network_mode: host
     volumes:
       - ./yarn-site.xml:/opt/hadoop-3.2.1/etc/hadoop/yarn-site.xml
-    depends_on:
-      - namenode
-      - datanode
+    networks:
+      - dinky_net
 
 
   nodemanager:
@@ -64,19 +59,20 @@ services:
     restart: always
     environment:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
-#      JAVA_HOME: /opt/java11
-#      PYTHON_HOME: /opt/miniconda3
-#      PATH: $PYTHON_HOME/bin:$PATH
+    #      JAVA_HOME: /opt/java11
+    #      PYTHON_HOME: /opt/miniconda3
+    #      PATH: $PYTHON_HOME/bin:$PATH
     env_file:
       - hadoop.env
-#    volumes:
-#      - /opt/jdk11/:/opt/java11
-#      - ./coda:/opt/coda
-#      - ./miniconda.sh:/root/miniconda3.sh
-##      - /usr/bin/python3.9:/usr/bin/python
-##      - /usr/local/lib/python3.9/site-packages:/usr/local/lib/python3.9/site-packages
-#      - /opt/jdk11/activation-1.1.1.jar:/opt/hadoop-3.2.1/share/hadoop/yarn/lib/activation-1.1.1.jar
-    network_mode: host
+    #    volumes:
+    #      - /opt/jdk11/:/opt/java11
+    #      - ./coda:/opt/coda
+    #      - ./miniconda.sh:/root/miniconda3.sh
+    ##      - /usr/bin/python3.9:/usr/bin/python
+    ##      - /usr/local/lib/python3.9/site-packages:/usr/local/lib/python3.9/site-packages
+    #      - /opt/jdk11/activation-1.1.1.jar:/opt/hadoop-3.2.1/share/hadoop/yarn/lib/activation-1.1.1.jar
+    networks:
+      - dinky_net
 
   historyserver:
     image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
@@ -91,8 +87,7 @@ services:
       - 8188:8188
       - 10200:10200
     networks:
-      hadoop:
-        ipv4_address: 172.22.0.6
+      - dinky_net
 #    extra_hosts:
 #      - resourcemanager:10.13.8.216
 #      - nodemanager:10.13.8.216

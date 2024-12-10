@@ -1,0 +1,14 @@
+version: "3"
+networks:
+  dinky_net:
+    external: true
+services:
+  mysql:
+    restart: always
+    image: mysql:5.7
+    volumes:
+      - ./conf:/etc/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=dinky
+    networks:
+      - dinky_net
