@@ -3,13 +3,14 @@ networks:
   dinky_net:
     external: true
 services:
-  mysql:
+  dinky14:
     restart: always
-    image: mysql:5.7
-    volumes:
-      - ./conf:/etc/mysql
+    image: dinky-test:flink-1.14
     environment:
-      - MYSQL_ROOT_PASSWORD=dinky
+      - DB_ACTIVE=mysql
+      - MYSQL_ADDR=mysql:3306
       - MYSQL_DATABASE=dinky
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=dinky
     networks:
       - dinky_net

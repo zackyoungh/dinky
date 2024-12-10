@@ -34,6 +34,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Init  Env Jar
+        run: |
+          wget -O e2e_test/docker-compose-env/dinky/mysql-connector-java-8.0.33.jar  https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.33/mysql-connector-java-8.0.33.jar |
+          wget -O e2e_test/docker-compose-env/flink/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar  https://repo1.maven.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.8.3-10.0/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar
       - name: Init  Docker Network
         run: |
           docker network create -d bridge dinky_net
@@ -46,13 +50,17 @@ jobs:
         with:
           compose-file: ./e2e_test/docker-compose-env/hadoop/docker-compose.yml
       # 设置 QEMU, 后面 docker buildx 依赖此.
+      - name: Init Run Docker Flink
+        uses: hoverkraft-tech/compose-action@v2.0.2
+        with:
+          compose-file: ./e2e_test/docker-compose-env/flink/docker-compose.yml
+      # 设置 QEMU, 后面 docker buildx 依赖此.
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       # 设置 Docker buildx, 方便构建 Multi platform 镜像
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build and push
-        id: docker_build
+      - name: Build Dinky Image
         uses: docker/build-push-action@v5
         with:
           file: ./deploy/docker/Dockerfile

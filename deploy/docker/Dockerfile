@@ -27,7 +27,7 @@ COPY --from=ui-build /build/dist/ /build/dinky-web/dist/
 
 RUN mvn package -Dmaven.test.skip=true -P prod,flink-single-version,flink-${FLINK_VERSION},fast
 RUN mkdir release &&  \
-    tar -C release -xvf build/dinky-release-${FLINK_VERSION}-${DINKY_VERSION}.tar.gz && \
+    tar -C release -xvf build/dinky-release-${FLINK_VERSION}-*.tar.gz && \
     mv release/dinky-release-* release/dinky
 
 
