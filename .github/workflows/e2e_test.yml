@@ -65,6 +65,8 @@ jobs:
       # 设置 Docker buildx, 方便构建 Multi platform 镜像
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
       - name: Build Dinky Image
         uses: docker/build-push-action@v5
         with:
