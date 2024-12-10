@@ -4,7 +4,6 @@ networks:
     external: true
 services:
   python-script:
-    restart: always
     image: python:3.8
     volumes:
       - ./:/app
