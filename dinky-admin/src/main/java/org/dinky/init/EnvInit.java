@@ -19,8 +19,6 @@
 
 package org.dinky.init;
 
-import org.dinky.data.constant.DirConstant;
-
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
@@ -28,7 +26,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.system.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
