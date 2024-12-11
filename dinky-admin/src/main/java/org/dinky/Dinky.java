@@ -19,6 +19,7 @@
 
 package org.dinky;
 
+import org.dinky.data.constant.DirConstant;
 import org.dinky.security.NoExitSecurityManager;
 
 import org.springframework.boot.SpringApplication;
