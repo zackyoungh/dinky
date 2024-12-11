@@ -87,4 +87,4 @@ jobs:
 #        with:
 #          compose-file: ./e2e_test/tools/docker-compose.yml
         run: |
-          sleep 30 && cd ./e2e_test/tools && docker run  -v ./:/app -w /app   --net dinky_net --rm --entrypoint /bin/bash python:3.8 -c  'pip install  -r requirements.txt  &&  python main.py dinky14:8888'
+          sleep 30 && cd ./e2e_test/tools && docker run  -v ./:/app -w /app   --net dinky_net --rm --entrypoint /bin/bash python:3.9 -c  'pip install  -r requirements.txt  &&  python main.py dinky14:8888'
