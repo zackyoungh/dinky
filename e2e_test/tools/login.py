@@ -30,9 +30,8 @@ def login(session: requests.Session):
     assertRespOk(login_resp, "Login")
 
     choose_tenant_resp = session.post(url("api/chooseTenant?tenantId=1"))
-    choose_tenant_resp.cookies.set("tenantId", 1)
     assertRespOk(choose_tenant_resp, "Choose Tenant")
-
+    session.cookies.set("tenantId", '1')
 
 
 
