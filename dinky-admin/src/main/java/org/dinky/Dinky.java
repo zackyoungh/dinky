@@ -54,6 +54,8 @@ public class Dinky {
         // chinese: 初始化JDBC Driver，因为包的数量特别庞大，所以这里需要异步执行，并提前加载Driver
         new Thread(DruidDriver::getInstance).start();
 
+   FileUtil.mkdir(DirConstant.getTempRootDir());
+
         SpringApplication app = new SpringApplication(Dinky.class);
         app.run(args);
     }
