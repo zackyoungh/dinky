@@ -63,6 +63,5 @@ public class EnvInit implements ApplicationRunner {
                 port,
                 ipAddress,
                 port);
-        FileUtil.mkdir(DirConstant.getTempRootDir());
     }
 }
