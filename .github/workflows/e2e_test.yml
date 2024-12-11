@@ -19,13 +19,6 @@ name: E2E Test
 
 on:
   workflow_dispatch:
-    inputs:
-      dinky_version:
-        description: 'dinky version'
-        required: true
-      docker_space:
-        description: 'docker space(eg: dinky)'
-        required: true
 
 jobs:
   init_env:
