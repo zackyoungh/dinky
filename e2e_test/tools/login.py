@@ -25,7 +25,7 @@ def assertRespOk(resp: Response, api_name: str):
 
 def login(session: requests.Session):
     login_resp: Response = session.post(url("api/login"),
-                                        json={"username": "admin", "password": "admin", "ldapLogin": False,
+                                        json={"username": "admin", "password": "dinky123!@#", "ldapLogin": False,
                                               "autoLogin": True})
     assertRespOk(login_resp, "Login")
 
