@@ -46,8 +46,8 @@ def addCatalogue(session: requests.Session, name: str, isLeaf: bool = False, par
     return getTask(data_list, name)
 
 
-def addTask(session: requests.Session, name: str, parent_id: int = 0, type: str = "FlinkSql",
-            statement: str = "") -> CatalogueTree:
+def addTask(session: requests.Session, name: str, parent_id: int = 0, dialect: str = "FlinkSql",
+            statement: str = "", runtModel: str = "local", clusterId: int = -1) -> CatalogueTree:
     """
     en: Add a task
     zh: 添加一个任务
@@ -60,7 +60,7 @@ def addTask(session: requests.Session, name: str, parent_id: int = 0, type: str 
     """
     add_parent_dir_resp = session.put(url("api/catalogue/saveOrUpdateCatalogueAndTask"), json={
         "name": name,
-        "type": type,
+        "type": dialect,
         "firstLevelOwner": 1,
         "task": {
             "savePointStrategy": 0,
@@ -68,10 +68,11 @@ def addTask(session: requests.Session, name: str, parent_id: int = 0, type: str 
             "envId": -1,
             "step": 1,
             "alertGroupId": -1,
-            "type": "local",
-            "dialect": type,
+            "type": runtModel,
+            "dialect": dialect,
             "statement": statement,
-            "firstLevelOwner": 1
+            "firstLevelOwner": 1,
+            "clusterId":clusterId
         },
         "isLeaf": False,
         "parentId": parent_id
@@ -125,6 +126,26 @@ def runFlinkLocalTask(session: requests.Session, parentId: int, name: str, state
     log.info(
         f"======================\nA Local Flink task is currently executed，name: {name}, statement: \n{statement}\n ======================")
     task = addTask(session, name, parentId, "FlinkSql", statement)
+    jobInstanceId = runTask(session, task.taskId)
+    sleep(waitTime)
+    status = getFlinkTaskStatus(session, jobInstanceId)
+    assertFlinkTaskIsRunning(status, name)
+
+
+def runFlinkSessionTask(session: requests.Session, parentId: int,clusterId:int, name: str, statement: str,
+                        waitTime: int = 10) -> None:
+    """
+    en: Run a FlinkLocal task
+    zh: 运行一个 FlinkLocal任务
+    :param session:  requests.Session
+    :param parentId:  dir id
+    :param name:  task name
+    :param statement:  statement
+    :param waitTime:  zh:等待时间
+    """
+    log.info(
+        f"======================\nA Session Flink task is currently executed，name: {name}, statement: \n{statement}\n ======================")
+    task = addTask(session, name, parentId, "FlinkSql", statement,"standalone",clusterId)
     jobInstanceId = runTask(session, task.taskId)
     sleep(waitTime)
     status = getFlinkTaskStatus(session, jobInstanceId)
