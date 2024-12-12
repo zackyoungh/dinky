@@ -8,7 +8,6 @@ services:
     image: flink:1.14.6
     command: jobmanager
     environment:
-      - HADOOP_USER_NAME=zcj
       - HADOOP_CONF_DIR=/opt/flink/conf
     volumes:
       - ./conf:/opt/flink/conf
@@ -19,7 +18,6 @@ services:
     image: flink:1.14.6
     command: taskmanager
     environment:
-      - HADOOP_USER_NAME=zcj
       - HADOOP_CONF_DIR=/opt/flink/conf
     volumes:
       - ./conf:/opt/flink/conf
