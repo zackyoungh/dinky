@@ -1004,8 +1004,9 @@ public class YarnClusterDescriptor implements ClusterDescriptor<ApplicationId> {
         }
 
         amContainer.setLocalResources(fileUploader.getRegisteredLocalResources());
-                // overwrite zh:这里必需需要剔除close，因为它会关闭filesystem，导致并发提交出现异常 en: Close must be culled here, as it closes the filesystem, causing an exception to the concurrent commit
-// fileUploader.close();
+        // overwrite zh:这里必需需要剔除close，因为它会关闭filesystem，导致并发提交出现异常 en: Close must be culled here, as it closes the
+        // filesystem, causing an exception to the concurrent commit
+        // fileUploader.close();
 
         // Setup CLASSPATH and environment variables for ApplicationMaster
         final Map<String, String> appMasterEnv = new HashMap<>();
@@ -1495,8 +1496,9 @@ public class YarnClusterDescriptor implements ClusterDescriptor<ApplicationId> {
                     throw new IOException("Deleting files in " + yarnFilesDir + " was unsuccessful");
                 }
 
-                        // overwrite zh:这里必需需要剔除close，因为它会关闭filesystem，导致并发提交出现异常 en: Close must be culled here, as it closes the filesystem, causing an exception to the concurrent commit
-// fs.close();
+                // overwrite zh:这里必需需要剔除close，因为它会关闭filesystem，导致并发提交出现异常 en: Close must be culled here, as it closes
+                // the filesystem, causing an exception to the concurrent commit
+                // fs.close();
             } catch (IOException e) {
                 LOG.error("Failed to delete Flink Jar and configuration files in HDFS", e);
             }

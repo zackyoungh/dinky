@@ -20,6 +20,11 @@
 package org.dinky.init;
 
 import org.apache.hadoop.fs.FileSystem;
+
+import java.io.IOException;
+
+import javax.annotation.PreDestroy;
+
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
@@ -30,9 +35,6 @@ import org.springframework.stereotype.Component;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.system.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.annotation.PreDestroy;
-import java.io.IOException;
 
 @Order(-1)
 @Component
@@ -65,6 +67,7 @@ public class EnvInit implements ApplicationRunner {
                 ipAddress,
                 port);
     }
+
     @PreDestroy
     private void destroy() throws IOException {
         FileSystem.closeAll();
