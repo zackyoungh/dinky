@@ -8,6 +8,6 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    command: 'pip install  -r requirements.txt &&  python main.py dinky14:8888'
+    command: 'pip install  -r requirements.txt &&  python main.py dinky:8888'
     networks:
       - dinky_net
