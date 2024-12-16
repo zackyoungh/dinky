@@ -108,20 +108,6 @@ public class Explainer {
         }
     }
 
-    public List<UDF> parseUDFFromStatements(String[] statements) {
-        List<UDF> udfList = new ArrayList<>();
-        for (String statement : statements) {
-            if (statement.isEmpty()) {
-                continue;
-            }
-            UDF udf = UDFUtil.toUDF(statement, jobManager.getDinkyClassLoader());
-            if (Asserts.isNotNull(udf)) {
-                udfList.add(udf);
-            }
-        }
-        return udfList;
-    }
-
     public ExplainResult explainSql(String statement) {
         log.info("Start explain FlinkSQL...");
         JobStatementPlan jobStatementPlan;
