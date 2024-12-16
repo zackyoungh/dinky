@@ -4,6 +4,7 @@ networks:
     external: true
 services:
   dinky:
+    container_name: dinky
     restart: always
     image: localhost:5000/dinky/dinky-test:flink-1.14
     environment:

@@ -4,6 +4,7 @@ networks:
     external: true
 services:
   jobmanager:
+    container_name: jobmanager
     restart: always
     image: flink:1.14.6
     command: jobmanager
@@ -15,6 +16,7 @@ services:
     networks:
       - dinky_net
   taskmanager:
+    container_name: taskmanager
     image: flink:1.14.6
     command: taskmanager
     environment:
