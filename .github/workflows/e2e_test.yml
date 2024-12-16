@@ -79,4 +79,4 @@ jobs:
         run: docker cp dinky:/opt/dinky/ ./dinky-release
       - name: Run Docker Python Script
         run: |
-          sleep 30  && docker run -v dinky-release/extends/flink1.14:/flink/lib -v e2e_test/docker-compose-env/flink/conf:/flink/conf -v dinky-release/jar:/dinky/jar  -v e2e_test/tools:/app -w /app   --net dinky_net --rm --entrypoint /bin/bash python:3.9 -c  'pip install  -r requirements.txt  &&  python main.py dinky:8888'
+          sleep 30  && docker run -v ./dinky-release/extends/flink1.14:/flink/lib -v./e2e_test/docker-compose-env/flink/conf:/flink/conf -v ./dinky-release/jar:/dinky/jar  -v./e2e_test/tools:/app -w /app   --net dinky_net --rm --entrypoint /bin/bash python:3.9 -c  'pip install  -r requirements.txt  &&  python main.py dinky:8888'
