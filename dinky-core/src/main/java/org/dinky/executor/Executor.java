@@ -19,7 +19,6 @@
 
 package org.dinky.executor;
 
-import cn.hutool.core.codec.Base64;
 import org.dinky.assertion.Asserts;
 import org.dinky.classloader.DinkyClassLoader;
 import org.dinky.context.CustomTableEnvironmentContext;
@@ -34,10 +33,7 @@ import org.dinky.interceptor.FlinkInterceptor;
 import org.dinky.interceptor.FlinkInterceptorResult;
 import org.dinky.job.JobStatementPlan;
 import org.dinky.resource.BaseResourceManager;
-import org.dinky.trans.ExecuteJarParseStrategyUtil;
 import org.dinky.trans.Operations;
-import org.dinky.trans.dml.ExecuteJarOperation;
-import org.dinky.trans.parse.ExecuteJarParseStrategy;
 import org.dinky.utils.KerberosUtil;
 
 import org.apache.flink.api.common.ExecutionConfig;
@@ -71,6 +67,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.URLUtil;
@@ -220,8 +217,9 @@ public abstract class Executor {
                 jobStatementPlan.addJobStatement(statement, JobStatementType.SET, operationType);
             } else if (operationType.equals(SqlType.EXECUTE_JAR)) {
                 JarSubmitParam jarSubmitParam = JarSubmitParam.build(statement);
-                jarSubmitParam.setUri("base64@"+ Base64.encode(pretreatStatement(jarSubmitParam.getArgs())));
-                jobStatementPlan.addJobStatement(jarSubmitParam.toString(), JobStatementType.EXECUTE_JAR, operationType);
+                jarSubmitParam.setUri("base64@" + Base64.encode(pretreatStatement(jarSubmitParam.getArgs())));
+                jobStatementPlan.addJobStatement(
+                        jarSubmitParam.toString(), JobStatementType.EXECUTE_JAR, operationType);
             } else if (operationType.equals(SqlType.EXECUTE)) {
                 jobStatementPlan.addJobStatement(statement, JobStatementType.PIPELINE, operationType);
             } else if (operationType.equals(SqlType.PRINT)) {

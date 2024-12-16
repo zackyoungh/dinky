@@ -32,7 +32,6 @@ import org.dinky.executor.Executor;
 import org.dinky.explainer.mock.MockStatementExplainer;
 import org.dinky.function.data.model.UDF;
 import org.dinky.function.pool.UdfCodePool;
-import org.dinky.function.util.UDFUtil;
 import org.dinky.job.JobConfig;
 import org.dinky.job.JobManager;
 import org.dinky.job.JobRunnerFactory;
