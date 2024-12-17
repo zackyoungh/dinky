@@ -15,6 +15,7 @@ services:
       - MYSQL_PASSWORD=dinky
     volumes:
       - ./mysql-connector-java-8.0.30.jar:/opt/dinky/extends/flink1.14/mysql-connector-java-8.0.30.jar
+      - ./javax.ws.rs-api-2.1.1.jar:/opt/dinky/extends/flink1.14/javax.ws.rs-api-2.1.1.jar
       - ../flink/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar:/opt/dinky/lib/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar
       - ../flink/conf:/flink/conf
     networks:
