@@ -272,8 +272,5 @@ classloader.resolve-order: parent-first
 # Interval in milliseconds for refreshing the monitored directories.
 #historyserver.archive.fs.refresh-interval: 10000
 
-blob.server.port: 6124
-query.server.port: 6125
-
 jobmanager.rpc.address: jobmanager
 env.java.opts: "-Dfile.encoding=UTF-8"

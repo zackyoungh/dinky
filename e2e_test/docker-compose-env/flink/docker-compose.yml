@@ -26,3 +26,5 @@ services:
       - ./flink-shaded-hadoop-2-uber-2.8.3-10.0.jar:/opt/flink/lib/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar
     networks:
       - dinky_net
+    depends_on:
+      - jobmanager
