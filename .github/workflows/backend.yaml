@@ -182,8 +182,7 @@ jobs:
           compose-file: ./e2e_test/docker-compose-env/hadoop/docker-compose.yml
       - name: Replace Flink  docker-compose yml
         run: |
-          echo "FLINK_VERSION=${{ matrix.flink }}" >> $GITHUB_ENV &&
-          envsubst < ./e2e_test/docker-compose-env/flink/docker-compose.yml > ./e2e_test/docker-compose-env/flink/docker-compose-${{ matrix.flink }}.yml
+          export FLINK_VERSION=${{ matrix.flink }} && envsubst < ./e2e_test/docker-compose-env/flink/docker-compose.yml > ./e2e_test/docker-compose-env/flink/docker-compose-${{ matrix.flink }}.yml
       - name: Init Run Docker Flink
         uses: hoverkraft-tech/compose-action@v2.0.2
         with:
