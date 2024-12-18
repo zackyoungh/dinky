@@ -82,6 +82,11 @@ jobs:
       - name: Npm Web Build
         if:  steps.filter.outputs.frontend == 'true'
         run: cd dinky-web && npm run build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dinky-web
+          path: ./dinky-web/dist
   build_release:
     name: Build Release
     runs-on: ubuntu-latest
@@ -97,6 +102,11 @@ jobs:
       MAVEN_OPTS: -Xmx2G -Xms2G
     steps:
       - uses: actions/checkout@v3
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dinky-web
+          path: ./dinky-web/dist
       # maven编译
       - name: Set up JDK ${{ matrix.jdk }}
         uses: actions/setup-java@v2
@@ -165,7 +175,6 @@ jobs:
         with:
           name: dinky-realease-${{ matrix.flink }}
           path: ./build
-      - run: ls -R ./build
       - name: Init  Env Jar
         run: |
           wget -O e2e_test/docker-compose-env/dinky/mysql-connector-java-8.0.30.jar  https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar &&
