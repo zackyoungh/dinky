@@ -16,8 +16,6 @@ RUN tar -C /opt/dinky -xzvf /dinky-release-${FLINK_VERSION}-*.tar.gz
 WORKDIR /opt/dinky/
 
 USER root
-
-COPY --from=build /build/release/dinky /opt/dinky/
 COPY --from=flink-base  /opt/flink/lib/*.jar  /opt/dinky/extends/flink${FLINK_VERSION}/flink/
 RUN rm -f  /opt/dinky/extends/flink${FLINK_VERSION}/flink/flink-table-planner-loader*.jar
 
