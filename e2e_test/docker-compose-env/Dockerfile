@@ -10,7 +10,7 @@ ENV FLINK_VERSION=${FLINK_VERSION}
 ENV DINKY_HOME=/opt/dinky/
 ENV H2_DB=./tmp/db/h2
 ADD dinky-release-${FLINK_VERSION}-*.tar.gz /opt
-RUN mv /opt/dinky-release-${FLINK_VERSION}* /opt/dinky
+RUN ls /opt && mv /opt/dinky-release-${FLINK_VERSION}* /opt/dinky
 
 
 WORKDIR /opt/dinky/
