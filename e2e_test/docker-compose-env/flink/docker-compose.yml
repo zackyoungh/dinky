@@ -7,7 +7,7 @@ services:
     hostname: jobmanager
     container_name: jobmanager
     restart: always
-    image: flink:1.14.6
+    image: flink:${FLINK_VERSION}-scala_2.12-java8
     command: jobmanager
     environment:
       - HADOOP_CONF_DIR=/opt/flink/conf
@@ -19,7 +19,7 @@ services:
   taskmanager:
     hostname: taskmanager
     container_name: taskmanager
-    image: flink:1.14.6
+    image: flink:${FLINK_VERSION}-scala_2.12-java8
     command: taskmanager
     environment:
       - HADOOP_CONF_DIR=/opt/flink/conf
