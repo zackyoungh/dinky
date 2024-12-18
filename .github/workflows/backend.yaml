@@ -181,7 +181,6 @@ jobs:
         with:
           compose-file: ./e2e_test/docker-compose-env/hadoop/docker-compose.yml
       - name: Replace Flink  docker-compose yml
-        env:
         run: |
           echo "FLINK_VERSION=${{ matrix.flink }}" >> $GITHUB_ENV
           envsubst < ./e2e_test/docker-compose-env/flink/docker-compose.yml > ./e2e_test/docker-compose-env/flink/docker-compose-${{ matrix.flink }}.yml
