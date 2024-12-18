@@ -167,7 +167,7 @@ jobs:
       - name: Init  Env Jar
         run: |
           wget -O e2e_test/docker-compose-env/dinky/mysql-connector-java-8.0.30.jar  https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar &&
-          wget -O e2e_test/docker-compose-env/flink/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar  https://repo1.maven.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.8.3-10.0/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar
+          wget -O e2e_test/docker-compose-env/flink/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar  https://repo1.maven.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.8.3-10.0/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar &&
           wget -O e2e_test/docker-compose-env/dinky/javax.ws.rs-api-2.1.1.jar  https://repo1.maven.org/maven2/javax/ws/rs/javax.ws.rs-api/2.1.1/javax.ws.rs-api-2.1.1.jar
       - name: Init  Docker Network
         run: |
@@ -182,7 +182,7 @@ jobs:
           compose-file: ./e2e_test/docker-compose-env/hadoop/docker-compose.yml
       - name: Replace Flink  docker-compose yml
         run: |
-          echo "FLINK_VERSION=${{ matrix.flink }}" >> $GITHUB_ENV
+          echo "FLINK_VERSION=${{ matrix.flink }}" >> $GITHUB_ENV &&
           envsubst < ./e2e_test/docker-compose-env/flink/docker-compose.yml > ./e2e_test/docker-compose-env/flink/docker-compose-${{ matrix.flink }}.yml
       - name: Init Run Docker Flink
         uses: hoverkraft-tech/compose-action@v2.0.2
