@@ -170,6 +170,25 @@ jobs:
         with:
           name: dinky-realease-${{ matrix.flink }}
           path: ./build
+      # 设置 QEMU, 后面 docker buildx 依赖此.
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      # 设置 Docker buildx, 方便构建 Multi platform 镜像
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
+      - name: Build Dinky Image
+        uses: docker/build-push-action@v5
+        with:
+          build-contexts: .
+          file: ./e2e_test/docker-compose-env/Dockerfile
+          # 是否 docker push
+          push: true
+          build-args: |
+            FLINK_VERSION=${{ matrix.flink }}
+          tags: |
+            localhost:5000/dinky/dinky-test:flink
       - name: Init  Env Jar
         run: |
           wget -O e2e_test/docker-compose-env/dinky/mysql-connector-java-8.0.30.jar  https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar &&
@@ -193,25 +212,6 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.2
         with:
           compose-file: ./e2e_test/docker-compose-env/flink/docker-compose-${{ matrix.flink }}.yml
-      # 设置 QEMU, 后面 docker buildx 依赖此.
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      # 设置 Docker buildx, 方便构建 Multi platform 镜像
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: network=host
-      - name: Build Dinky Image
-        uses: docker/build-push-action@v5
-        with:
-          build-contexts: ./
-          file: ./e2e_test/docker-compose-env/Dockerfile
-          # 是否 docker push
-          push: true
-          build-args: |
-            FLINK_VERSION=${{ matrix.flink }}
-          tags: |
-            localhost:5000/dinky/dinky-test:flink
       - name: Init Run Docker Dinky
         uses: hoverkraft-tech/compose-action@v2.0.2
         with:
