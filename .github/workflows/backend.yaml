@@ -83,7 +83,7 @@ jobs:
         if:  steps.filter.outputs.frontend == 'true'
         run: cd dinky-web && npm run build
   build_release:
-    name: Build_JDK
+    name: Build Release
     runs-on: ubuntu-latest
     needs: check
     strategy:
@@ -198,7 +198,7 @@ jobs:
       - name: Build Dinky Image
         uses: docker/build-push-action@v5
         with:
-          file: ./deploy/docker/Dockerfile
+          file: ./e2e_test/docker-compose-env/Dockerfile
           # 是否 docker push
           push: true
           build-args: |
