@@ -164,6 +164,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dinky-realease-${{ matrix.flink }}
+          path: ./build
+      - run: ls -R ./build
       - name: Init  Env Jar
         run: |
           wget -O e2e_test/docker-compose-env/dinky/mysql-connector-java-8.0.30.jar  https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar &&
