@@ -209,6 +209,7 @@ jobs:
       - name: Build Dinky Image
         uses: docker/build-push-action@v5
         with:
+          build-contexts: ./
           file: ./e2e_test/docker-compose-env/Dockerfile
           # 是否 docker push
           push: true
