@@ -9,8 +9,7 @@ ARG FLINK_VERSION
 ENV FLINK_VERSION=${FLINK_VERSION}
 ENV DINKY_HOME=/opt/dinky/
 ENV H2_DB=./tmp/db/h2
-ADD dinky-release-${FLINK_VERSION}-*.tar.gz /
-RUN tar -C /opt/dinky -xzvf /dinky-release-${FLINK_VERSION}-*.tar.gz
+ADD dinky-release-${FLINK_VERSION}-*.tar.gz /opt/dinky
 
 
 WORKDIR /opt/dinky/
