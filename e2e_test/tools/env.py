@@ -59,7 +59,7 @@ def addYarnCluster(session: Session) -> int:
             },
             "flinkConfig": {
                 "configuration": {
-                    "jobmanager.memory.process.size": "800m",
+                    "jobmanager.memory.process.size": "1024m",
                     "taskmanager.memory.process.size": "1024m",
                     "taskmanager.numberOfTaskSlots": "1",
                     "state.savepoints.dir": "hdfs:///flink/savepoint",

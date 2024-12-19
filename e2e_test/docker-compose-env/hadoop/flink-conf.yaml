@@ -40,7 +40,7 @@ jobmanager.rpc.port: 6123
 #
 # Note this accounts for all memory usage within the JobManager process, including JVM metaspace and other overhead.
 
-jobmanager.memory.process.size: 800m
+jobmanager.memory.process.size: 1024m
 
 
 # The total process memory size for the TaskManager.
