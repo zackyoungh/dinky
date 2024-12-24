@@ -11,7 +11,7 @@ jobs:
         with:
           version: v1.31.4+k3s1
       - name: Get k3s kube config
-        run: k3d kubeconfig list -a  && mkdir ./kube && k3d kubeconfig list -a >  ./kube/k3s.yaml
+        run: k3d kubeconfig get --all  && mkdir ./kube && k3d kubeconfig get --all >  ./kube/k3s.yaml
       - name: Init k8s RBAC and namespace
         run: |
           kubectl create namespace dinky
