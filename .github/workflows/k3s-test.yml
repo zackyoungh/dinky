@@ -1,4 +1,4 @@
-name: Build documentation
+name: k3s test
 on:
   workflow_dispatch:
 jobs:
@@ -9,7 +9,7 @@ jobs:
       - name: Init k3s
         uses: nolar/setup-k3d-k3s@v1
         with:
-          version: v1.21.2+k3s1
+          version: v1.31.4+k3s1
       - name: Get k3s kube config
         run: cat /etc/rancher/k3s/k3s.yaml  && mkdir ./kube && cp /etc/rancher/k3s/k3s.yaml  ./kube/k3s.yaml
       - name: Init k8s RBAC and namespace
