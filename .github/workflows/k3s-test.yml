@@ -1,0 +1,20 @@
+name: Build documentation
+on:
+  workflow_dispatch:
+jobs:
+  k3s:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Init k3s
+        uses: nolar/setup-k3d-k3s@v1
+        with:
+          version: v1.21.2+k3s1
+      - name: Get k3s kube config
+        run: cat /etc/rancher/k3s/k3s.yaml  && mkdir ./kube && cp /etc/rancher/k3s/k3s.yaml  ./kube/k3s.yaml
+      - name: Init k8s RBAC and namespace
+        run: |
+          kubectl create namespace dinky
+          kubectl create clusterrolebinding flink-role-binding-default --clusterrole=edit --serviceaccount=dinky:dinky
+          kubectl create serviceaccount flink-service-account
+          kubectl create clusterrolebinding flink-role-binding-flink --clusterrole=edit --serviceaccount=dinky:flink-service-account

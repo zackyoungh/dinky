@@ -19,18 +19,20 @@ class FlinkRunMode(Enum):
     LOCAL = "local"
     STANDALONE = "standalone"
     YARN_APPLICATION = "yarn-application"
+    KUBERNETES_APPLICATION = "kubernetes-application"
 
     @staticmethod
     def getAllMode():
-        return [FlinkRunMode.LOCAL, FlinkRunMode.STANDALONE, FlinkRunMode.YARN_APPLICATION]
+        return [FlinkRunMode.LOCAL, FlinkRunMode.STANDALONE, FlinkRunMode.YARN_APPLICATION,FlinkRunMode.KUBERNETES_APPLICATION]
 
 
 class Task:
-    def __init__(self, session: requests.Session, cluster_id: int, yarn_cluster_id: int, parent_id: int, name: str,
+    def __init__(self, session: requests.Session, cluster_id: int, yarn_cluster_id: int,k8s_native_cluster_id: int, parent_id: int, name: str,
                  statement):
         self.session = session
         self.cluster_id = cluster_id
         self.yarn_cluster_id = yarn_cluster_id
+        self.k8s_native_cluster_id = k8s_native_cluster_id
         self.parent_id = parent_id
         self.name = name
         self.statement = statement
@@ -69,6 +71,8 @@ class Task:
             params["task"]["clusterId"] = self.cluster_id
         elif run_model == FlinkRunMode.YARN_APPLICATION:
             params["task"]["clusterConfigurationId"] = self.yarn_cluster_id
+        elif run_model == FlinkRunMode.KUBERNETES_APPLICATION:
+            params["task"]["clusterConfigurationId"] = self.k8s_native_cluster_id
         add_parent_dir_resp = session.put(url("api/catalogue/saveOrUpdateCatalogueAndTask"), json=params)
         assertRespOk(add_parent_dir_resp, "Create a task")
         get_all_tasks_resp = session.post(url("api/catalogue/getCatalogueTreeData"), json={
